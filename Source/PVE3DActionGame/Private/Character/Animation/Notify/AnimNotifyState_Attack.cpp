@@ -14,29 +14,29 @@ void UAnimNotifyState_Attack::NotifyBegin(USkeletalMeshComponent* MeshComp, UAni
 
 void UAnimNotifyState_Attack::NotifyTick(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float FrameDeltaTime)
 {
-	AccumulatedTime += FrameDeltaTime;
+	accumulatedTime += FrameDeltaTime;
 
-	if (AccumulatedTime >= DesiredTickRate)
+	if (accumulatedTime >= desiredTickRate)
 	{
-		AccumulatedTime = 0.f;
+		accumulatedTime = 0.f;
 
-		TArray<FHitResult> HitResults;
+		TArray<FHitResult> hitResults;
 		TArray<AActor*> ignoreActors;
 
-		FVector SphereLocation = MeshComp->GetSocketLocation("CollisionPoint");
+		FVector sphereLocation = MeshComp->GetSocketLocation("CollisionPoint");
 
-		TArray<UArrowComponent*> ArrowComponents;
-		MeshComp->GetOwner()->GetComponents<UArrowComponent>(ArrowComponents);
-		for (UArrowComponent* ArrowComp : ArrowComponents)
+		TArray<UArrowComponent*> arrowComponents;
+		MeshComp->GetOwner()->GetComponents<UArrowComponent>(arrowComponents);
+		for (UArrowComponent* arrowComp : arrowComponents)
 		{
-			if (ArrowComp && ArrowComp->GetName() == "AttackPoint")
+			if (arrowComp && arrowComp->GetName() == "AttackPoint")
 			{
-				SphereLocation = ArrowComp->GetComponentLocation();
+				sphereLocation = arrowComp->GetComponentLocation();
 			}
 		}
 
-		bool bHit = UKismetSystemLibrary::SphereTraceMulti(MeshComp->GetOwner(), SphereLocation, SphereLocation, SphereRadius,
-			ETraceTypeQuery::TraceTypeQuery1, true, ignoreActors, EDrawDebugTrace::ForDuration, HitResults, true);
+		bool bHit = UKismetSystemLibrary::SphereTraceMulti(MeshComp->GetOwner(), sphereLocation, sphereLocation, radius,
+			ETraceTypeQuery::TraceTypeQuery1, true, ignoreActors, EDrawDebugTrace::ForDuration, hitResults, true);
 		if (bHit)
 		{
 

@@ -21,12 +21,12 @@ public:
 
 
 private:
-	float AccumulatedTime = 0.f;
+	float accumulatedTime = 0.f;
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tick")
-	float DesiredTickRate = 0.1f;
+	float desiredTickRate = 0.1f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tick")
-	float SphereRadius = 5.f;
+	float radius = 5.f;
 };
