@@ -22,7 +22,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Debug")
 	float drawTime = 1.f;
-
+		
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Debug")
 	TEnumAsByte<ETraceTypeQuery> traceType = ETraceTypeQuery::TraceTypeQuery3;
 

@@ -20,8 +20,10 @@ protected:
 public:	
 	virtual void Tick(float DeltaTime) override;
 
-
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (Category = "State"))
 	bool bAttack = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (Category = "State"))
+	bool bHit = false;
 };

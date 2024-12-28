@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Animation/AnimInstance.h"
-#include "PlayerAnimInstance.generated.h"
+#include "Character/CharacterBase.h"
+#include "AICharacterBase.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class PVE3DACTIONGAME_API UPlayerAnimInstance : public UAnimInstance
+class PVE3DACTIONGAME_API AAICharacterBase : public ACharacterBase
 {
 	GENERATED_BODY()
 	

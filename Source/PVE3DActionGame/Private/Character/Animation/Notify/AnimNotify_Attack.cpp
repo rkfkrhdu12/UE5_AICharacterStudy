@@ -30,6 +30,8 @@ void UAnimNotify_Attack::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceB
 				}
 			}
 
+			UE_LOG(LogTemp, Log, TEXT("Collision with %f"), sphereLocation.Z);
+			
 			bool bhit = UKismetSystemLibrary::SphereTraceMulti(MeshComp->GetOwner(), 
 				// StartLoca	EndLoca			SphereRad
 				sphereLocation, sphereLocation, radius, 
@@ -59,7 +61,8 @@ void UAnimNotify_Attack::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceB
 								hitActors.Add(hitResult.GetActor());
 
 								FName HitBoneName = hitResult.BoneName;
-								UE_LOG(LogTemp, Log, TEXT("Collision with %s"), *HitBoneName.ToString());
+								//UE_LOG(LogTemp, Log, TEXT("Collision with %f"), hitResult.Location.Z);
+								//UE_LOG(LogTemp, Log, TEXT("Collision with %s"), *HitBoneName.ToString());
 							}
 						}
 					}
