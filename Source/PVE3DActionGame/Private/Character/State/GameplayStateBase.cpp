@@ -1,5 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Character/AICharacterBase.h"
+#include "Character/State/GameplayStateBase.h"
 
