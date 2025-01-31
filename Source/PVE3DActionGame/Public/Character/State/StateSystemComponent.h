@@ -3,12 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Components/ActorComponent.h"
+#include "ActorComponentBase.h"
 #include "StateSystemComponent.generated.h"
 
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class PVE3DACTIONGAME_API UStateSystemComponent : public UActorComponent
+UCLASS(Blueprintable, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+class PVE3DACTIONGAME_API UStateSystemComponent : public UActorComponentBase
 {
 	GENERATED_BODY()
 

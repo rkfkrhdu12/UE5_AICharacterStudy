@@ -11,6 +11,35 @@ ACharacterBase::ACharacterBase()
 
 }
 
+bool ACharacterBase::InitializeSystem()
+{
+	bool ReturnValue = true;
+
+	if (StateSystem)
+	{
+		_StateSystemComponent = NewObject<UStateSystemComponent>(this, StateSystem);
+		
+	}
+
+	// TODO : InputSystem
+
+	//
+	
+	if (ActionSystem)
+	{
+		_ActionSystemComponent = NewObject<UActionSystemComponent>(this, ActionSystem);
+		
+	}
+
+	if (AttributeSystem)
+	{
+		_AttributeSystemComponent = NewObject<UAttributeSystemComponent>(this, AttributeSystem);
+		
+	}
+
+	return ReturnValue;
+}
+
 // Called when the game starts or when spawned
 void ACharacterBase::BeginPlay()
 {

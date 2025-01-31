@@ -3,6 +3,8 @@
 
 #include "Character/State/StateSystemComponent.h"
 
+#include "Character/CharacterBase.h"
+
 // Sets default values for this component's properties
 UStateSystemComponent::UStateSystemComponent()
 {
@@ -19,7 +21,7 @@ void UStateSystemComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// ...
+	GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Cyan, TEXT("StateSystem Activate"));
 	
 }
 
