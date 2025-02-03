@@ -7,22 +7,40 @@
 #include "StateSystemComponent.generated.h"
 
 
-UCLASS(Blueprintable, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+class UGameplayStateBase;
+
+UCLASS(Blueprintable, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class PVE3DACTIONGAME_API UStateSystemComponent : public UActorComponentBase
 {
 	GENERATED_BODY()
-
-public:	
-	// Sets default values for this component's properties
+public:
 	UStateSystemComponent();
 
+	/* Main System */
+public:
+	void BeginPlayComponent();
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+protected: /* Variables */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Debug", meta = (AllowPrivateAccess = true))
+	TArray<UGameplayStateBase*> _States;
+
+
+	
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/* UE Default Virtual Functions  */
 protected:
-	// Called when the game starts
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+public:
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
+	                           FActorComponentTickFunction* ThisTickFunction) override;
 
-		
+	
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+protected: /* SubClass Variables */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default", meta = (AllowPrivateAccess = true))
+	TArray<TSubclassOf<UGameplayStateBase>> States;
+
 };

@@ -3,6 +3,10 @@
 
 #include "Character/CharacterBase.h"
 
+#include "Character/State/StateSystemComponent.h"
+#include "Character/Action/ActionSystemComponent.h"
+#include "Character/Attribute/AttributeSystemComponent.h"
+
 // Sets default values
 ACharacterBase::ACharacterBase()
 {
@@ -11,14 +15,14 @@ ACharacterBase::ACharacterBase()
 
 }
 
-bool ACharacterBase::InitializeSystem()
+bool ACharacterBase::BeginPlayComponents()
 {
 	bool ReturnValue = true;
 
 	if (StateSystem)
 	{
 		_StateSystemComponent = NewObject<UStateSystemComponent>(this, StateSystem);
-		
+		_StateSystemComponent->RegisterComponent();
 	}
 
 	// TODO : InputSystem
@@ -28,13 +32,13 @@ bool ACharacterBase::InitializeSystem()
 	if (ActionSystem)
 	{
 		_ActionSystemComponent = NewObject<UActionSystemComponent>(this, ActionSystem);
-		
+		_ActionSystemComponent->RegisterComponent();
 	}
 
 	if (AttributeSystem)
 	{
 		_AttributeSystemComponent = NewObject<UAttributeSystemComponent>(this, AttributeSystem);
-		
+		_AttributeSystemComponent->RegisterComponent();
 	}
 
 	return ReturnValue;
@@ -44,7 +48,8 @@ bool ACharacterBase::InitializeSystem()
 void ACharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	BeginPlayComponents();
 }
 
 // Called every frame

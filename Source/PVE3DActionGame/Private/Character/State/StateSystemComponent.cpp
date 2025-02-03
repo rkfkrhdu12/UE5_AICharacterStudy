@@ -4,6 +4,7 @@
 #include "Character/State/StateSystemComponent.h"
 
 #include "Character/CharacterBase.h"
+#include "Character/State/GameplayStateBase.h"
 
 // Sets default values for this component's properties
 UStateSystemComponent::UStateSystemComponent()
@@ -15,22 +16,40 @@ UStateSystemComponent::UStateSystemComponent()
 	// ...
 }
 
+void UStateSystemComponent::BeginPlayComponent()
+{
+	if (States.Num())
+	{
+		for (TSubclassOf<UGameplayStateBase> Element : States)
+		{
+			UGameplayStateBase* NewState = NewObject<UGameplayStateBase>(this, Element);
+			_States.Add(NewState);
+		}
+	}
+}
+
 
 // Called when the game starts
 void UStateSystemComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Cyan, TEXT("StateSystem Activate"));
-	
+	BeginPlayComponent();
+
+	UE_LOG(LogTemp, Warning, TEXT("UStateSystemComponent Activate"));
+
+	for (UGameplayStateBase* Element : _States)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("UStateSystemComponent State : %s"), *Element->GetStateName());
+	}
 }
 
 
 // Called every frame
-void UStateSystemComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+void UStateSystemComponent::TickComponent(float DeltaTime, ELevelTick TickType,
+                                          FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...
 }
-

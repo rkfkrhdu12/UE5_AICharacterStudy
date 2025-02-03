@@ -7,10 +7,6 @@
 
 #include "Containers/UnrealString.h"
 
-#include "Character/State/StateSystemComponent.h"
-#include "Character/Action/ActionSystemComponent.h"
-#include "Character/Attribute/AttributeSystemComponent.h"
-
 #include "CharacterBase.generated.h"
 
 UCLASS()
@@ -24,20 +20,20 @@ public:
 public:
 	// BeginPlay() 에서 호출됨.
 	/// TSub형태의 시스템 클래스들을 실제 형태로 Init
-	bool InitializeSystem();
+	bool BeginPlayComponents();
 	
 protected: /* System Components */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default|System", meta = (AllowPrivateAccess = true))
-	TSubclassOf<UStateSystemComponent> StateSystem;
+	TSubclassOf<class UStateSystemComponent> StateSystem;
 
 	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default|System", meta = (AllowPrivateAccess = true))
-	// TSubclassOf<UActionSystemComponent>  _InputSystemComponent;
+	// TSubclassOf<UActionSystemComponent>  InputSystemComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default|System", meta = (AllowPrivateAccess = true))
-	TSubclassOf<UActionSystemComponent> ActionSystem;
+	TSubclassOf<class UActionSystemComponent> ActionSystem;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default|System", meta = (AllowPrivateAccess = true))
-	TSubclassOf<UAttributeSystemComponent> AttributeSystem;
+	TSubclassOf<class UAttributeSystemComponent> AttributeSystem;
 
 	
 /* UE Default Virtual Functions  */	
@@ -50,13 +46,13 @@ protected:
 
 public:
 	
-protected: /*  */
+protected: /* Activate Variables */
 	/* System Components */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Debug|System", meta = (AllowPrivateAccess = true))
-	UStateSystemComponent* _StateSystemComponent = nullptr;
+	class UStateSystemComponent* _StateSystemComponent = nullptr;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Debug|System", meta = (AllowPrivateAccess = true))
-	UActionSystemComponent* _ActionSystemComponent = nullptr;
+	class UActionSystemComponent* _ActionSystemComponent = nullptr;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Debug|System", meta = (AllowPrivateAccess = true))
-	UAttributeSystemComponent* _AttributeSystemComponent = nullptr;
+	class UAttributeSystemComponent* _AttributeSystemComponent = nullptr;
 
 };
