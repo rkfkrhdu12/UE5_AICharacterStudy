@@ -6,12 +6,56 @@
 #include "GameplayActionBase.generated.h"
 
 
-UCLASS()
+class UActionSystemComponent;
+class ACharacterBase;
+
+UCLASS(Blueprintable)
 class PVE3DACTIONGAME_API UGameplayActionBase : public UObject
 {
 	GENERATED_BODY()
-
 public:	
 	UGameplayActionBase();
 
+	void OnBeginPlay(ACharacterBase* Character);
+	
+	void OnEnter();
+	void OnExit();
+	void OnBreak();
+
+protected:
+	bool _IsActive = false;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default", meta = (AllowPrivateAccess = true))
+	FName _Name;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default", meta = (AllowPrivateAccess = true))
+	ACharacterBase* _Character;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default", meta = (AllowPrivateAccess = true))
+	USkeletalMeshComponent* _Mesh;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default", meta = (AllowPrivateAccess = true))
+	UAnimInstance* _AnimInstance;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default", meta = (AllowPrivateAccess = true))
+	UActionSystemComponent* _ActionSystem;
+	
+public:
+	UFUNCTION(BlueprintCallable)
+	const FName& GetActionName() const { return _Name; }
+	
+public:
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void BeginPlay(ACharacterBase* Character);
+	virtual void BeginPlay_Implementation(ACharacterBase* Character) {}
+	
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void Enter();
+	virtual void Enter_Implementation() {}
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void Exit();
+	virtual void Exit_Implementation() {}
+	
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void Break();
+	virtual void Break_Implementation() {}
+	
 };

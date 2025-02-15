@@ -14,7 +14,7 @@ class PVE3DACTIONGAME_API UActorComponentBase : public UActorComponent
 public:	
 	UActorComponentBase();
 
-
+	virtual void BeginPlayComponent() {}
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Character", meta = (AllowPrivateAccess = true))
 	class ACharacterBase* _Character = nullptr;

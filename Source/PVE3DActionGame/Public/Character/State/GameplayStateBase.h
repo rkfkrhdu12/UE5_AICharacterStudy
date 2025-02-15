@@ -20,7 +20,7 @@ public:
 	void BeginPlay();
 
 	// 다음 상태로 이동 가능한지 * StateSystem에 의해 컨트롤됨.
-	bool IsTransition(FName TransStateName) const; 
+	bool IsTransition(const FName& TransStateName) const; 
 
 	// 상태가 시작될때 * StateSystem에 의해 컨트롤됨.
 	void OnEnter();
@@ -31,18 +31,23 @@ public:
 	
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/* Variables */
-	
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default|EditorModify", meta = (AllowPrivateAccess = true))
+	TArray<FName> _EnableTransitionNames;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default|EditorModify", meta = (AllowPrivateAccess = true))
+	TArray<FName> _IgnoreTransitionNames;
+	
 	// State의 이름
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default|EditorModify", meta = (AllowPrivateAccess = true))
-	FString _Name;
+	FName _Name;
 	
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/* Get Set Function */
 public:
 
 	UFUNCTION(BlueprintCallable)
-	const FString& GetStateName() const { return _Name; }
+	const FName& GetStateName() const { return _Name; }
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////

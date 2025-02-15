@@ -6,6 +6,7 @@
 #include "Character/State/StateSystemComponent.h"
 #include "Character/Action/ActionSystemComponent.h"
 #include "Character/Attribute/AttributeSystemComponent.h"
+#include "Character/Input/InputSystemComponent.h"
 
 // Sets default values
 ACharacterBase::ACharacterBase()
@@ -15,7 +16,7 @@ ACharacterBase::ACharacterBase()
 
 }
 
-bool ACharacterBase::BeginPlayComponents()
+bool ACharacterBase::RegisterComponents()
 {
 	bool ReturnValue = true;
 
@@ -25,9 +26,11 @@ bool ACharacterBase::BeginPlayComponents()
 		_StateSystemComponent->RegisterComponent();
 	}
 
-	// TODO : InputSystem
-
-	//
+	if (InputSystem)
+	{
+		_InputSystemComponent = NewObject<UInputSystemComponent>(this, InputSystem);
+		_InputSystemComponent->RegisterComponent();
+	}
 	
 	if (ActionSystem)
 	{
@@ -44,12 +47,49 @@ bool ACharacterBase::BeginPlayComponents()
 	return ReturnValue;
 }
 
+bool ACharacterBase::StartComponents()
+{
+	bool ReturnValue = true;
+
+	if (StateSystem)
+	{
+		_StateSystemComponent->BeginPlayComponent();
+	}
+
+	if (InputSystem)
+	{
+		_InputSystemComponent->BeginPlayComponent();
+	}
+	
+	if (ActionSystem)
+	{
+		_ActionSystemComponent->BeginPlayComponent();
+	}
+
+	if (AttributeSystem)
+	{
+		_AttributeSystemComponent->BeginPlayComponent();
+	}
+
+	return ReturnValue;
+}
+
+void ACharacterBase::OnInputKey(ECharacterInput InputType)
+{
+	if (_InputSystemComponent)
+	{
+		_InputSystemComponent->OnInputRecive.Broadcast(static_cast<uint8>(InputType));
+	}
+}
+
 // Called when the game starts or when spawned
 void ACharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
 
-	BeginPlayComponents();
+	RegisterComponents();
+
+	StartComponents();
 }
 
 // Called every frame

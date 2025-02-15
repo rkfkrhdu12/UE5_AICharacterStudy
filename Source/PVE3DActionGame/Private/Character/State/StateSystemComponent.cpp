@@ -4,6 +4,7 @@
 #include "Character/State/StateSystemComponent.h"
 
 #include "Character/CharacterBase.h"
+#include "Character/Input/InputSystemComponent.h"
 #include "Character/State/GameplayStateBase.h"
 
 // Sets default values for this component's properties
@@ -18,29 +19,107 @@ UStateSystemComponent::UStateSystemComponent()
 
 void UStateSystemComponent::BeginPlayComponent()
 {
-	if (States.Num())
+	Super::BeginPlayComponent();
+	
+	if (_Character)
+		_Character->GetInputComponent()->OnInputRecive.AddDynamic(this, &UStateSystemComponent::ReciveInputKey);
+}
+
+void UStateSystemComponent::ChangeState(uint8 StateType)
+{
+	if (!_States.Num() || !_StateNames.Num()) return;
+
+	_ChangeIndex = StateType;
+
+	UGameplayStateBase* CurrentState = _States[_CurrentIndex];
+	UGameplayStateBase* ChangedState = _States[_ChangeIndex];
+	if (!CurrentState && !ChangedState) return;
+
+	FName ChangedTypeName = _StateNames[_ChangeIndex];
+
+	if (CurrentState->IsTransition(ChangedTypeName))
 	{
-		for (TSubclassOf<UGameplayStateBase> Element : States)
-		{
-			UGameplayStateBase* NewState = NewObject<UGameplayStateBase>(this, Element);
-			_States.Add(NewState);
-		}
+		// 바꿀 상태로 이동 가능함.
+		CurrentState->OnExit();
+		ChangedState->OnEnter();
+
+		auto msg = CurrentState->GetStateName().ToString() + " > " + ChangedState->GetStateName().ToString();
+		GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Cyan, *msg);
+
+		_PrevIndex = _CurrentIndex;
+		_CurrentIndex = _ChangeIndex;
+
+		OnStateChanged.Broadcast(_CurrentIndex);
 	}
 }
 
+void UStateSystemComponent::ChangeState(ECharacterState StateType)
+{
+	ChangeState(static_cast<uint8>(StateType));
+}
+
+void UStateSystemComponent::ReciveInputKey_Implementation(uint8 InputType)
+{
+	switch (const ECharacterInput CurrentInput = static_cast<ECharacterInput>(InputType))
+	{
+	case ECharacterInput::Attack: ChangeState(ECharacterState::Attack);
+		break;
+	case ECharacterInput::Dodge: ChangeState(ECharacterState::Dodge);
+		break;
+	}
+}
 
 // Called when the game starts
 void UStateSystemComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	BeginPlayComponent();
-
-	UE_LOG(LogTemp, Warning, TEXT("UStateSystemComponent Activate"));
-
-	for (UGameplayStateBase* Element : _States)
+	if (StateCount)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UStateSystemComponent State : %s"), *Element->GetStateName());
+		for (uint8 index = 0; index != StateCount; ++index)
+		{
+			ECharacterState Type = static_cast<ECharacterState>(index);
+			if (UEnum* EnumPtr = FindObject<UEnum>(ANY_PACKAGE, TEXT("ECharacterState"), true))
+			{
+				FString TypeString = EnumPtr->GetValueAsString(Type);
+				if (TypeString.IsEmpty()) continue;
+
+				int StartIndex = TypeString.Find("::") + 2;
+
+				FName Name = FName(*TypeString.Mid(StartIndex, TypeString.Len() - StartIndex));
+				if (Name.IsNone()) continue;
+
+				_StateNames.Add(index, Name);
+				_NameStates.Add(Name, index);
+			}
+		}
+	}
+
+	if (States.Num())
+	{
+		for (TSubclassOf<UGameplayStateBase> Element : States)
+		{
+			UGameplayStateBase* NewState = NewObject<UGameplayStateBase>(this, Element);
+			if (_NameStates.Contains(NewState->GetStateName()))
+			{
+				uint8 CurIndex = _NameStates[NewState->GetStateName()];
+
+				_States.Add(CurIndex, NewState);
+			}
+		}
+	}
+
+	for (uint8 i = static_cast<uint8>(ECharacterState::Idle); i != static_cast<uint8>(ECharacterState::LAST); ++i)
+	{
+		if (_States.Contains(i))
+		{
+			UE_LOG(LogTemp, Log, TEXT("StateSystem(%s) : %hd State's Name %s"), *GetName(), i,
+			       *_States[i]->GetStateName().ToString());
+		}
+		else
+		{
+			UE_LOG(LogTemp, Log, TEXT("StateSystem(%s) : %hd Index Not Found"), *GetName(), i);
+		}
 	}
 }
 
