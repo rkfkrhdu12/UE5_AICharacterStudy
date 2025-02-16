@@ -15,9 +15,7 @@ class PVE3DACTIONGAME_API UActionSystemComponent : public UActorComponentBase
 	GENERATED_BODY()
 public:	
 	UActionSystemComponent();
-
 public:
-
 	UFUNCTION(BlueprintCallable)
 	void StartAction(FName ActionName);
 	UFUNCTION(BlueprintCallable)

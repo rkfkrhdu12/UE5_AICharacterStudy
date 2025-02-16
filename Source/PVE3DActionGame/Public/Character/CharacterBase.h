@@ -59,6 +59,13 @@ protected: /* Activate Variables */
 	class UStateSystemComponent* _StateSystemComponent = nullptr;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Debug|System", meta = (AllowPrivateAccess = true))
 	class UInputSystemComponent* _InputSystemComponent = nullptr;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Debug|System", meta = (AllowPrivateAccess = true))
+	class UActionSystemComponent* _ActionSystemComponent = nullptr;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Debug|System", meta = (AllowPrivateAccess = true))
+	class UAttributeSystemComponent* _AttributeSystemComponent = nullptr;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Debug|System", meta = (AllowPrivateAccess = true))
+	class UTagSystemComponent* _TagSystemComponent;
 
 public:
 	class UStateSystemComponent* GetStateComponent() const
@@ -81,10 +88,9 @@ public:
 		return _AttributeSystemComponent;
 	}
 
+	class UTagSystemComponent* GetTagComponent() const
+	{
+		return _TagSystemComponent;
+	}
 protected:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Debug|System", meta = (AllowPrivateAccess = true))
-	class UActionSystemComponent* _ActionSystemComponent = nullptr;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Debug|System", meta = (AllowPrivateAccess = true))
-	class UAttributeSystemComponent* _AttributeSystemComponent = nullptr;
-
 };

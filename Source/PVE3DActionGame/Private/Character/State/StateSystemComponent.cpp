@@ -23,6 +23,10 @@ void UStateSystemComponent::BeginPlayComponent()
 	
 	if (_Character)
 		_Character->GetInputComponent()->OnInputRecive.AddDynamic(this, &UStateSystemComponent::ReciveInputKey);
+
+
+	FString msg = FString::Printf(TEXT("CurState : %s"), *_States[_CurrentIndex]->GetStateName().ToString());
+	GEngine->AddOnScreenDebugMessage(1, 0.0f, FColor::Cyan, msg);
 }
 
 void UStateSystemComponent::ChangeState(uint8 StateType)
@@ -43,12 +47,12 @@ void UStateSystemComponent::ChangeState(uint8 StateType)
 		CurrentState->OnExit();
 		ChangedState->OnEnter();
 
-		auto msg = CurrentState->GetStateName().ToString() + " > " + ChangedState->GetStateName().ToString();
-		GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Cyan, *msg);
-
 		_PrevIndex = _CurrentIndex;
 		_CurrentIndex = _ChangeIndex;
-
+		
+		FString msg = FString::Printf(TEXT("CurState : %s"), *_States[_CurrentIndex]->GetStateName().ToString());
+		GEngine->AddOnScreenDebugMessage(1, 0.0f, FColor::Cyan, msg);
+		
 		OnStateChanged.Broadcast(_CurrentIndex);
 	}
 }
@@ -102,8 +106,9 @@ void UStateSystemComponent::BeginPlay()
 			UGameplayStateBase* NewState = NewObject<UGameplayStateBase>(this, Element);
 			if (_NameStates.Contains(NewState->GetStateName()))
 			{
+				NewState->BeginPlay(_Character);
+				
 				uint8 CurIndex = _NameStates[NewState->GetStateName()];
-
 				_States.Add(CurIndex, NewState);
 			}
 		}

@@ -40,7 +40,6 @@ void UActionSystemComponent::OnReciveStateChange(uint8 StateType)
 	ReciveStateChange(StateType);
 }
 
-
 // Called when the game starts
 void UActionSystemComponent::BeginPlay()
 {
@@ -60,7 +59,6 @@ void UActionSystemComponent::BeginPlay()
 			}
 		}
 	}
-
 }
 
 void UActionSystemComponent::BeginPlayComponent()

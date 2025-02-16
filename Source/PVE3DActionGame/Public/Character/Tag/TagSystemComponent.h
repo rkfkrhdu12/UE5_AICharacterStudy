@@ -15,5 +15,11 @@ class PVE3DACTIONGAME_API UTagSystemComponent : public UActorComponentBase
 {
 	GENERATED_BODY()
 public:
+	UFUNCTION(BlueprintCallable)
+	void AddTag(const FString& Tag);
+	UFUNCTION(BlueprintCallable)
+	void RemoveTag(const FString& Tag);
 	
+protected:
+	TMap<FString, TArray<FString>> _TagList;
 };

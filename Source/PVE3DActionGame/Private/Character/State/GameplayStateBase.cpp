@@ -3,12 +3,17 @@
 
 #include "Character/State/GameplayStateBase.h"
 
+#include "Character/CharacterBase.h"
+
 UGameplayStateBase::UGameplayStateBase()
 {
 }
 
-void UGameplayStateBase::BeginPlay()
+void UGameplayStateBase::BeginPlay(ACharacterBase* Character)
 {
+	if (!Character) return;
+
+	_Character = Character;
 }
 
 bool UGameplayStateBase::IsTransition(const FName& TransStateName) const

@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameplayStateBase.generated.h"
 
+class ACharacterBase;
 /**
  * 
  */
@@ -17,7 +18,7 @@ public:
 	/* Main Functions */
 public:
 	// 생성될때 * StateSystem에 의해 컨트롤됨.
-	void BeginPlay();
+	void BeginPlay(ACharacterBase* Character);
 
 	// 다음 상태로 이동 가능한지 * StateSystem에 의해 컨트롤됨.
 	bool IsTransition(const FName& TransStateName) const; 
@@ -27,7 +28,6 @@ public:
 
 	// 상태가 종료될때 * StateSystem에 의해 컨트롤됨.
 	void OnExit();
-
 	
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/* Variables */
@@ -41,6 +41,9 @@ protected:
 	// State의 이름
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default|EditorModify", meta = (AllowPrivateAccess = true))
 	FName _Name;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Debug", meta = (AllowPrivateAccess = true))
+	ACharacterBase* _Character;
 	
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/* Get Set Function */

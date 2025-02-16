@@ -7,6 +7,7 @@
 #include "Character/Action/ActionSystemComponent.h"
 #include "Character/Attribute/AttributeSystemComponent.h"
 #include "Character/Input/InputSystemComponent.h"
+#include "Character/Tag/TagSystemComponent.h"
 
 // Sets default values
 ACharacterBase::ACharacterBase()
@@ -42,6 +43,12 @@ bool ACharacterBase::RegisterComponents()
 	{
 		_AttributeSystemComponent = NewObject<UAttributeSystemComponent>(this, AttributeSystem);
 		_AttributeSystemComponent->RegisterComponent();
+	}
+
+	if (!_TagSystemComponent)
+	{
+		_TagSystemComponent = NewObject<UTagSystemComponent>(this);
+		_TagSystemComponent->RegisterComponent();
 	}
 
 	return ReturnValue;
