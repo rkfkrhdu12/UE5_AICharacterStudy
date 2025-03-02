@@ -22,6 +22,9 @@ public:
 	void OnExit();
 	void OnBreak();
 
+	UFUNCTION()
+	virtual void OnReciveStateChange(uint8 State);
+
 protected:
 	bool _IsActive = false;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default", meta = (AllowPrivateAccess = true))
@@ -57,5 +60,9 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Break();
 	virtual void Break_Implementation() {}
+	
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void ReciveStateChange(uint8 State);
+	virtual void ReciveStateChange_Implementation(uint8 State) {}
 	
 };

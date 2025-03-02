@@ -5,6 +5,7 @@
 
 #include "Character/CharacterBase.h"
 #include "Character/Action/ActionSystemComponent.h"
+#include "Character/State/StateSystemComponent.h"
 
 // Sets default values for this component's properties
 UGameplayActionBase::UGameplayActionBase()
@@ -25,6 +26,9 @@ void UGameplayActionBase::OnBeginPlay(ACharacterBase* Character)
 
 	_ActionSystem = _Character->GetActionComponent();
 	if (!_ActionSystem) {  UE_LOG(LogTemp, Log, TEXT("%s(Action)'s _ActionSystem Is Null"), *GetActionName().ToString()); return; }
+
+	if (_Character)
+		_Character->GetStateComponent()->OnStateChanged.AddDynamic(this, &UGameplayActionBase::OnReciveStateChange);
 	
 	BeginPlay(Character);
 }
@@ -54,6 +58,11 @@ void UGameplayActionBase::OnBreak()
 		
 		Break();
 	}
+}
+
+void UGameplayActionBase::OnReciveStateChange(uint8 State)
+{
+	ReciveStateChange(State);
 }
 
 

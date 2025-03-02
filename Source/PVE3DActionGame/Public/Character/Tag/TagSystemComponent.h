@@ -19,7 +19,9 @@ public:
 	void AddTag(const FString& Tag);
 	UFUNCTION(BlueprintCallable)
 	void RemoveTag(const FString& Tag);
-	
+
+	UFUNCTION(BlueprintCallable)
+	bool IsTag(const FString& Tag) const;
 protected:
 	TMap<FString, TArray<FString>> _TagList;
 };

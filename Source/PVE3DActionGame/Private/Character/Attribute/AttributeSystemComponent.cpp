@@ -20,8 +20,6 @@ UAttributeSystemComponent::UAttributeSystemComponent()
 void UAttributeSystemComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
-	GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Cyan, TEXT("AttributeSystem Activate"));
 }
 
 
@@ -30,6 +28,5 @@ void UAttributeSystemComponent::TickComponent(float DeltaTime, ELevelTick TickTy
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	// ...
 }
 

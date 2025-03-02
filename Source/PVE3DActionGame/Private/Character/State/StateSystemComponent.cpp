@@ -24,9 +24,6 @@ void UStateSystemComponent::BeginPlayComponent()
 	if (_Character)
 		_Character->GetInputComponent()->OnInputRecive.AddDynamic(this, &UStateSystemComponent::ReciveInputKey);
 
-
-	FString msg = FString::Printf(TEXT("CurState : %s"), *_States[_CurrentIndex]->GetStateName().ToString());
-	GEngine->AddOnScreenDebugMessage(1, 0.0f, FColor::Cyan, msg);
 }
 
 void UStateSystemComponent::ChangeState(uint8 StateType)
@@ -49,9 +46,8 @@ void UStateSystemComponent::ChangeState(uint8 StateType)
 
 		_PrevIndex = _CurrentIndex;
 		_CurrentIndex = _ChangeIndex;
-		
-		FString msg = FString::Printf(TEXT("CurState : %s"), *_States[_CurrentIndex]->GetStateName().ToString());
-		GEngine->AddOnScreenDebugMessage(1, 0.0f, FColor::Cyan, msg);
+
+		UE_LOG(LogTemp, Log, TEXT("CurState : %s"), *_States[_CurrentIndex]->GetStateName().ToString());
 		
 		OnStateChanged.Broadcast(_CurrentIndex);
 	}

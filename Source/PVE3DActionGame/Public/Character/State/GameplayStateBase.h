@@ -28,6 +28,9 @@ public:
 
 	// 상태가 종료될때 * StateSystem에 의해 컨트롤됨.
 	void OnExit();
+
+	UFUNCTION()
+	virtual void OnChangeState(uint8 State);
 	
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/* Variables */
@@ -65,4 +68,7 @@ public:
 	void Exit();
 	virtual void Exit_Implementation() {}
 	
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void ChangeState(uint8 State);
+	virtual void ChangeState_Implementation(uint8 State) {}
 };
